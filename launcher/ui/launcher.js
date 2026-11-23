@@ -3,6 +3,7 @@
 const host = window.chrome?.webview;
 
 const resolutionHints = {
+    540: 'Below the Xbox 360 (960×540), scaled up to the window. For weak graphics cards.',
     720: 'Native Xbox 360 resolution (1280×720). Lightest on the GPU.',
     1080: 'Rendered at 2560×1440, shown at 1920×1080: sharper than native 1080p.',
     1440: 'Rendered at 2560×1440, twice the console resolution.',

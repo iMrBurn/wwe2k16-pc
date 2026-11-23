@@ -5,7 +5,7 @@ namespace Wwe2k16Launcher;
 
 public sealed class LauncherSettings
 {
-    // "720" (native Xbox 360), "1080", "1440", "2160" (4K)
+    // "540" (below the Xbox 360, for weak PCs), "720" (native Xbox 360), "1080", "1440", "2160" (4K)
     public string Resolution { get; set; } = "1080";
     public bool Vsync { get; set; } = true;
     public bool Keep60 { get; set; } = true;
@@ -28,7 +28,7 @@ public sealed class LauncherSettings
     public string GameFolder { get; set; } = "";
     public string PreviousGameFolder { get; set; } = "";
 
-    [JsonIgnore] public static readonly string[] Resolutions = ["720", "1080", "1440", "2160"];
+    [JsonIgnore] public static readonly string[] Resolutions = ["540", "720", "1080", "1440", "2160"];
     [JsonIgnore] public static readonly string[] WindowModeOptions = ["windowed", "borderless"];
     [JsonIgnore] public static readonly string[] AnisoOptions = ["off", "4x", "16x"];
     [JsonIgnore] public static readonly string[] AaOptions = ["off", "fxaa", "extreme", "max"];

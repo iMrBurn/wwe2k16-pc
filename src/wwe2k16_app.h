@@ -367,8 +367,11 @@ class Wwe2k16App : public rex::ReXApp {
       set("svr_fxaa", std::to_string(profile.fxaa));
       upscale = upscale || profile.upscale;
     }
+    // 540p: drawn below the Xbox's 720p (960x540) for weak graphics cards; the present pass scales it up.
+    if (res == "540") upscale = true;
     if (upscale) set("svr_upscaler", "1");
-    if (res == "720") set("svr_render_scale", "1");
+    if (res == "540") set("svr_render_scale", "540");
+    else if (res == "720") set("svr_render_scale", "1");
     else if (res == "1080" || res == "1440") set("svr_render_scale", upscale ? "1" : "2");
     else if (res == "2160") set("svr_render_scale", upscale ? "2" : "3");
     // Anisotropic filtering: 0 off, 3 = 4x, 5 = 16x.
