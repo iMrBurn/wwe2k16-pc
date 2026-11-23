@@ -72,6 +72,8 @@ void StartProfileSamplerFromEnvironment() {
     std::this_thread::sleep_for(std::chrono::duration<double>(delay ? std::atof(delay) : 0.3));
     const char* interval = std::getenv("WWE2K16_PROFILE_INTERVAL_MS");  // pause between sweeps (default 1)
     const int interval_ms = interval ? std::max(1, std::atoi(interval)) : 1;
+    const auto start = Clock::now();
+    REXLOG_INFO("[wwe2k16-profile] sampling starts");
     const auto end = Clock::now() + std::chrono::duration<double>(seconds);
     // (module, offset, thread name) -> count
     std::map<std::tuple<std::string, uint64_t, std::string>, uint64_t> hist;
@@ -148,7 +150,8 @@ void StartProfileSamplerFromEnvironment() {
             if (!chain.empty()) {
               std::string key;
               for (uint64_t c : chain) key += (key.empty() ? "" : ">") + [&] { char b[24]; std::snprintf(b, sizeof(b), "%llx", (unsigned long long)c); return std::string(b); }();
-              ++chains[{from_caller ? "waiting" : "running", key, it->second}];
+              const long bucket = static_cast<long>(std::chrono::duration<double>(Clock::now() - start).count());
+              ++chains[{(from_caller ? "waiting@" : "running@") + std::to_string(bucket), key, it->second}];
             }
             ++samples;
           }

@@ -39,6 +39,7 @@ for line in open(prof):
     if not where.startswith("chain:"):
         continue
     kind, frames = where[6:].split(":", 1)
+    kind = kind.split("@")[0]
     thread = thread.strip()
     names = [resolve(int(f, 16)).replace("__imp__", "") for f in frames.split(">")]
     # collapse the wait wrappers' own frames and repeats

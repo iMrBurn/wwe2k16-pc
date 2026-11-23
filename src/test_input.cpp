@@ -11,6 +11,8 @@
 
 #include "test_input.h"
 
+#include <rex/logging.h>
+
 #include <chrono>
 #include <cstdlib>
 #include <deque>
@@ -113,6 +115,7 @@ TestInput PollTestInput() {
     if (!running) {
       running = true;
       step_start = now;
+      if (s.buttons) REXLOG_INFO("[test-input] buttons {:#06x}", s.buttons);
       if (s.cursor == Step::Cursor::kSet) cursor = true, cx = s.x, cy = s.y;
       if (s.cursor == Step::Cursor::kOff) cursor = false;
     }

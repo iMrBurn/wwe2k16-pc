@@ -33,3 +33,21 @@ Do not sample with an interval of 1 ms for long: the game then runs far from nor
   moves on (it follows the 60 Hz frame pacing). The real per-frame work is spread thin (no other function above 1 %).
 - The rest of the render thread's time is the renderer: constant uploads (`UploadPixelShaderConstants`,
   `UploadVertexShaderConstants`, about 7 %) and texture mirrors (`Build2DMirror`, about 1 %).
+
+## Match loading: what the profile shows and does not show (second session of notes)
+
+`tools/resolve_window.py` prints the CPU use second by second (profile lines carry a time bucket) and the hottest functions of a
+window. `WWE2K16_TEST_INPUT` now logs each button the script presses (`[test-input] buttons 0x1000` = A), so a profile can be
+lined up with the script.
+
+- A full scripted run (title, menus, match select, first entrance; 100 s, sampled every 10 ms) shows **no CPU burst at any
+  time**: running samples are 24 to 47 per second all along, in one thread (the game and render thread). Nothing looks like a
+  load phase: the loading screens are waiting, not computing, in this build.
+- What does show up are **single long stalls of the game and render thread**, found in the `[perf]` log lines (max interval):
+  - 10000.5 ms at about 52 s of a scripted run (`fps30-0.log`, 2026-11-19), exactly 10 s: it looks like a wait that ran out its
+    timeout, not work; it did not repeat in later runs;
+  - 1036 ms (`native-run3.log`, 2026-11-12) and 1604 ms (a test-pack run, 2026-11-12), at menu and match transitions;
+  - 5234 ms (`profm-90.log`, a run slowed by the sampler).
+- These stalls are intermittent and were not reproduced under the sampler, so they have not been traced to a wait yet. To
+  catch one: run unsampled, note the time of the stall from the log, then sample a window around the same time with a long
+  interval (25 ms), or add a watchdog that dumps the chains of all threads when the render thread has not presented for 800 ms.
