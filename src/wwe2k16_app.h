@@ -39,6 +39,7 @@
 #include "achievements_summary.h"
 #include "display_refresh_rate.h"
 #include "device_profile.h"
+#include "profile_sampler.h"
 #include "launcher_settings.h"
 #include "fps_overlay.h"
 #include "screenshot.h"
@@ -128,6 +129,7 @@ class Wwe2k16App : public rex::ReXApp {
   }
 
   void OnPreLaunchModule() override {
+    wwe2k16::StartProfileSamplerFromEnvironment();  // dev aid, only with WWE2K16_PROFILE
     // WWE2K16_TEST_NO_VULKAN=1 pretends the device could not be created (tests the DirectX 12 fallback below).
     if (std::getenv("WWE2K16_TEST_NO_VULKAN") || !bd::gpu::Video::CreateHostDevice(window())) {
       // GPU or driver without the Vulkan 1.2 features re:Blue needs (bufferDeviceAddress, descriptor indexing...):

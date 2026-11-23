@@ -16,6 +16,7 @@ set(WWE2K16_SOURCES
     src/shadows.cpp
     src/crash_guards.cpp
     src/framerate_hook.cpp
+    src/profile_sampler.cpp
     src/test_input.cpp
     src/fps_overlay.cpp
     src/display_refresh_rate.cpp
